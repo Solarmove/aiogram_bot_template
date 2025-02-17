@@ -127,5 +127,3 @@ sudo systemctl enable aiogram_scheduler.service
 1. Сделайте fork репозитория.
 2. Создайте новую ветку для своей функциональности.
 3. Отправьте pull request с описанием изменений.
-
-```
