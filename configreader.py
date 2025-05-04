@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from typing import Literal
 
 from arq.connections import RedisSettings
 from pydantic import PostgresDsn, ConfigDict
@@ -17,6 +16,11 @@ class BotConfig(BaseSettings):
 class DBConfig(BaseSettings):
     """Database configuration"""
 
+    host: str
+    port: int
+    user: str
+    password: str
+    database: str
     postgres_dsn: PostgresDsn
     redis_host: str
     redis_port: int
