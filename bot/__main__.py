@@ -9,14 +9,14 @@ from aiogram.fsm.storage.redis import RedisEventIsolation, RedisStorage
 from aiogram_dialog import setup_dialogs
 from aiogram_i18n.cores import FluentRuntimeCore
 
-from bot.src.aiogram_dialog import dialog_routers
-from bot.src.db.base import create_all
-from bot.src.db.redis import redis
-from bot.src.handlers import routers_list
-from bot.src.middleware.db import DbSessionMiddleware
-from bot.src.middleware.i18n_dialog import RedisI18nMiddleware
-from bot.src.utils.i18n_utils.i18n_format import make_i18n_middleware
-from bot.src.utils.set_bot_commands import set_default_commands
+from bot.dialogs import dialog_routers
+from bot.db.base import create_all
+from bot.db.redis import redis
+from bot.handlers import routers_list
+from bot.middleware.db import DbSessionMiddleware
+from bot.middleware.i18n_dialog import RedisI18nMiddleware
+from bot.utils.i18n_utils.i18n_format import make_i18n_middleware
+from bot.utils.set_bot_commands import set_default_commands
 from configreader import config
 
 # Logging

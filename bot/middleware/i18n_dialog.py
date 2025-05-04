@@ -9,7 +9,7 @@ from aiogram_i18n.managers import BaseManager
 from fluent.runtime import FluentLocalization
 from redis.asyncio import Redis
 
-from bot.src.db.redis import get_user_locale, set_user_locale
+from bot.db.redis import get_user_locale, set_user_locale
 from configreader import config
 
 

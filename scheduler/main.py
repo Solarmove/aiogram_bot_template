@@ -2,11 +2,8 @@ import logging
 
 from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
-from arq import cron
-from sqlalchemy.ext.asyncio import create_async_engine
 
-from bot.src.db.base import get_async_session
-from bot.src.utils.unitofwork import UnitOfWork
+from bot.utils.unitofwork import UnitOfWork
 from configreader import config, RedisConfig
 
 
@@ -22,11 +19,6 @@ logger = logging.getLogger(__name__)
 
 
 async def startup(ctx):
-    engine = create_async_engine(
-        str(config.db_config.postgres_dsn), future=True, echo=False
-    )
-    session_factory = get_async_session
-    ctx["session_factory"] = session_factory
     ctx["uow"] = UnitOfWork
     ctx["bot"] = Bot(
         token=config.bot_config.token,

@@ -19,11 +19,14 @@
 - Sqlalchemy: ORM для работы с базой данных.
 - i18n: поддержка многоязычных сообщений.
 - Systemd Unit-файлы: примеры для автозапуска бота и планировщика на Linux (Ubuntu).
+- Docker: поддержка контейнеризации через Docker Compose.
 
 ## Требования
 
 - Python 3.10 или выше
 - Redis
+- PostgreSQL
+- Docker и Docker Compose (для запуска в контейнерах)
 - Ubuntu (для установки и настройки на сервере)
 
 ## Установка
@@ -35,25 +38,8 @@ git clone https://github.com/Solarmove/aiogram_bot_template.git
 cd aiogram_bot_template
 ```
 
-### 2. Настройка виртуального окружения
 
-Рекомендуется использовать виртуальное окружение для изоляции зависимостей:
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### 3. Установка зависимостей
-
-Установите необходимые пакеты из файла requirements.txt:
-
-```bash
-pip install --upgrade pip
-pip install -r requirements.txt
-```
-
-### 4. Настройка переменных окружения
+### 2. Настройка переменных окружения
 
 Скопируйте пример файла окружения и отредактируйте его в соответствии с вашими настройками:
 
@@ -68,19 +54,21 @@ nano .env
 vim .env
 ```
 
-Заполните необходимые данные (токен бота, настройки подключения к Redis и т.д.).
+Заполните необходимые данные (токен бота, настройки подключения к Redis и Postgres и т.д.).
 
 ### 5. Запуск бота
 
-#### Ручной запуск
+#### Docker Compose (рекомендуется)
 
-Запустите бота командой:
+Для запуска всех компонентов в Docker-контейнерах:
 
 ```bash
-python3 -m bot
+docker-compose up --build -d
 ```
 
-Запуск планировщика
+Это запустит бота, PostgreSQL и Redis в отдельных контейнерах с правильной конфигурацией.
+
+Запуск планировщика:
 
 ```bash
 arq scheduler.main.WorkerSettings
@@ -100,16 +88,45 @@ sudo cp systemd/aiogram_scheduler.service /etc/systemd/system/
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl start aiogram_bot.service
 sudo systemctl start aiogram_scheduler.service
 ```
 
 Для автоматического запуска при загрузке системы выполните:
 
 ```bash
-sudo systemctl enable aiogram_bot.service
 sudo systemctl enable aiogram_scheduler.service
 ```
+
+## Структура проекта
+
+```
+├── bot/                 # Основной код бота
+├── scheduler/           # Код планировщика задач
+│   ├── main.py          # Настройки ARQ-воркера
+│   └── func.py          # Функции для планировщика
+├── systemd/             # Unit-файлы для systemd
+├── .env.example         # Пример файла с переменными окружения
+├── docker-compose.yml   # Конфигурация Docker Compose
+└── README.md            # Документация проекта
+```
+
+## Использование Docker
+
+В проект включен файл `docker-compose.yml`, который настраивает три сервиса:
+
+1. **bot** - основной сервис с ботом, собирается из текущего каталога
+2. **postgres** - база данных PostgreSQL 15 с сохранением данных в volume
+3. **redis** - Redis 7 для кэширования и очередей
+
+Переменные окружения передаются из файла `.env`.
+
+## Использование планировщика (ARQ)
+
+Планировщик задач ARQ настроен в модуле `scheduler`. Для добавления новых задач:
+
+1. Создайте функцию в `scheduler/func.py`
+2. Зарегистрируйте её в `WorkerSettings.functions` в `scheduler/main.py`
+3. Для периодических задач используйте `WorkerSettings.cron_jobs`
 
 ## Использование
 

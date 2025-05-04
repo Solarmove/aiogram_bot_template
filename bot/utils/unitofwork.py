@@ -3,8 +3,8 @@ from typing import Type
 
 from sqlalchemy.ext.asyncio.session import AsyncSession, async_sessionmaker
 
-from bot.src.db.base import async_session_maker
-from bot.src.db.repositories.repo import (
+from bot.db.base import async_session_maker
+from bot.db.repositories.repo import (
     UserRepo,
     GroupRepo,
     TaskRepo,

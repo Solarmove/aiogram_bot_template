@@ -1,7 +1,7 @@
 from aiogram import Router
 from aiogram.filters import CommandStart
 from aiogram.types import Message
-from bot.src.utils.unitofwork import IUnitOfWork
+from bot.utils.unitofwork import IUnitOfWork
 
 router = Router()
 
