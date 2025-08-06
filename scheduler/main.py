@@ -27,8 +27,9 @@ async def startup(ctx):
 
 
 async def shutdown(ctx):
-    bot: Bot = ctx["bot"]
-    await bot.session.close()
+    bot: Bot|None = ctx.get("bot")
+    if bot:
+        await bot.session.close()
 
 
 class WorkerSettings:

@@ -51,3 +51,7 @@ class SQLAlchemyRepository(AbstractRepository):
         res = await self.session.execute(stmt)
         res = res.scalars().first()
         return res
+
+    async def delete_one(self, id: int):
+        stmt = delete(self.model).where(self.model.id == id)
+        await self.session.execute(stmt)
